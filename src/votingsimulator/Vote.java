@@ -1,16 +1,12 @@
 package votingsimulator;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class Vote {
     protected int[] voteOptions;
     protected int maxCandidates;
-    
-    protected Set<Integer> candidatesChosen;
     
     protected Map<Integer, Integer> multiVote;
     protected int singleVote;
@@ -21,7 +17,6 @@ public class Vote {
         this.voteOptions = voteOptions;
         this.maxCandidates = maxCandidates;
         
-        candidatesChosen = new HashSet<>();
         multiVote = new HashMap<>();
         singleVote = -1;
     }
@@ -36,13 +31,11 @@ public class Vote {
             do {
                 candidate = random.nextInt(maxCandidates);
                 
-                if (!candidatesChosen.contains(candidate)) {
-                    candidatesChosen.add(candidate);
+                if (!multiVote.containsKey(candidate)) {
+                    multiVote.put(candidate, points);    
                     found = true;
                 }
             } while (!found);
-            
-            multiVote.put(candidate, points);
             
             if (first) {
                singleVote = candidate;
