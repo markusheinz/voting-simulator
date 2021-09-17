@@ -40,17 +40,22 @@ public class VotingSimulator {
             rankingSingle[singleVote].addVote();
         }
         
-        printRanking(rankingSingle);
-        printRanking(rankingMulti);
+        printRanking("Single Vote", rankingSingle);
+        printRanking("Multi Vote", rankingMulti);
     }
     
-    protected static void printRanking(Candidate[] ranking) {
-        Arrays.sort(ranking);
+    protected static void printRanking(String label, Candidate[] ranking) {
+        System.out.println(label);
         
+        int sum = 0;
+        Arrays.sort(ranking);
+
         for (int i = 0; i < MAX_CANDIDATE; i++) {
             System.out.println(ranking[i].toString());
+            sum += ranking[i].getVoteCount();
         }
         
+        System.out.println(String.format("Sum: %22d votes", sum));
         System.out.println();
     }
 }

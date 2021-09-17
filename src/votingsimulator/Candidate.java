@@ -3,8 +3,8 @@ package votingsimulator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Candidate implements Comparable<Candidate> {
-    protected int candidateId;
-    protected AtomicInteger voteCount;
+    protected final int candidateId;
+    protected final AtomicInteger voteCount;
     
     public Candidate(int id) {
         candidateId = id;
@@ -17,6 +17,10 @@ public class Candidate implements Comparable<Candidate> {
 
     public void addVote(int points) {
         voteCount.getAndAdd(points);
+    }
+
+    public int getVoteCount() {
+        return voteCount.get();
     }
 
     @Override
