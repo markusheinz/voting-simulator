@@ -1,14 +1,12 @@
 package votingsimulator;
 
 import java.util.Arrays;
-import java.util.Map.Entry;
 
 public class VotingSimulator {
     public static final int MAX_CANDIDATE = 30;
     public static final int[] POINTS = {5, 4, 3};    
     public static final int VOTERS = 60000000;
-
-    protected static final Vote[] votes = new Vote[VOTERS];
+    public static final int THREAD_COUNT = 2;
 
     protected static final Candidate[] rankingMulti =
             new Candidate[MAX_CANDIDATE];
@@ -25,19 +23,24 @@ public class VotingSimulator {
             rankingMulti[i] = new Candidate(i);
             rankingSingle[i] = new Candidate(i);
         }
-        
-        for (Vote vote : votes) {
-            vote = new Vote(POINTS, MAX_CANDIDATE);
-            vote.vote();
+
+        final Thread[] workers = new Thread[THREAD_COUNT];
+
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            int start = i * (VOTERS / THREAD_COUNT);
+            int end  = (i + 1) * (VOTERS / THREAD_COUNT);
             
-            for (Entry<Integer, Integer> iterator : 
-                    vote.getMultiVote().entrySet()) {
-                
-                rankingMulti[iterator.getKey()].addVote(iterator.getValue());
+            workers[i] = new Thread(new VotingThread(start, end, rankingMulti, 
+                    rankingSingle));
+            workers[i].start();
+        }
+
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            try {
+                workers[i].join();
+            } catch (InterruptedException ex) {
+                // do nothing
             }
-            
-            int singleVote = vote.getSingleVote();
-            rankingSingle[singleVote].addVote();
         }
         
         printRanking("Single Vote", rankingSingle);
