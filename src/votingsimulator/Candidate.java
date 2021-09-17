@@ -1,14 +1,12 @@
 package votingsimulator;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class Candidate implements Comparable<Candidate> {
     protected final int candidateId;
-    protected final AtomicInteger voteCount;
+    protected int voteCount;
     
     public Candidate(int id) {
         candidateId = id;
-        voteCount = new AtomicInteger();
+        voteCount = 0;
     }
 
     public void addVote() {
@@ -16,22 +14,22 @@ public class Candidate implements Comparable<Candidate> {
     }
 
     public void addVote(int points) {
-        voteCount.getAndAdd(points);
+        voteCount += points;
     }
 
     public int getVoteCount() {
-        return voteCount.get();
+        return voteCount;
     }
 
     @Override
     public int compareTo(Candidate o) {
-        return o.voteCount.get() - voteCount.get();
+        return o.voteCount - voteCount;
     }
     
     @Override
     public String toString() {
         return String.format("Candidate %02d has %10d votes.", 
-                candidateId, voteCount.get());
+                candidateId, voteCount);
     }
             
 }

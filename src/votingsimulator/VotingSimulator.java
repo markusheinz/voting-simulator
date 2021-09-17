@@ -8,30 +8,20 @@ public class VotingSimulator {
     public static final int VOTERS = 60000000;
     public static final int THREAD_COUNT = 4;
 
-    protected static final Candidate[] rankingMulti =
-            new Candidate[MAX_CANDIDATE];
-
-    protected static final Candidate[] rankingSingle =
-            new Candidate[MAX_CANDIDATE];
+    protected static final VotingThread[] workers =
+            new VotingThread[THREAD_COUNT];
     
     public static void main(String[] args) {
-        doElection();
+        runThreads();
+        calculateResults();
     }
     
-    protected static void doElection() {
-        for (int i = 0; i < MAX_CANDIDATE; i++) {
-            rankingMulti[i] = new Candidate(i);
-            rankingSingle[i] = new Candidate(i);
-        }
-
-        final Thread[] workers = new Thread[THREAD_COUNT];
-
+    protected static void runThreads() {
         for (int i = 0; i < THREAD_COUNT; i++) {
             int start = i * (VOTERS / THREAD_COUNT);
             int end  = (i + 1) * (VOTERS / THREAD_COUNT);
             
-            workers[i] = new Thread(new VotingThread(start, end, rankingMulti, 
-                    rankingSingle));
+            workers[i] = new VotingThread(start, end);
             workers[i].start();
         }
 
@@ -40,6 +30,24 @@ public class VotingSimulator {
                 workers[i].join();
             } catch (InterruptedException ex) {
                 // do nothing
+            }
+        }
+    }
+
+    protected static void calculateResults() {
+        Candidate[] rankingMulti =  new Candidate[MAX_CANDIDATE];
+        Candidate[] rankingSingle = new Candidate[MAX_CANDIDATE];
+
+        for (int i = 0; i < MAX_CANDIDATE; i++) {
+            rankingMulti[i] = new Candidate(i);
+            rankingSingle[i] = new Candidate(i);
+
+            for (int j = 0; j < THREAD_COUNT; j++) {
+                int multi = workers[j].getRankingMulti()[i].getVoteCount();
+                rankingMulti[i].addVote(multi);
+
+                int single = workers[j].getRankingSingle()[i].getVoteCount();
+                rankingSingle[i].addVote(single);
             }
         }
         

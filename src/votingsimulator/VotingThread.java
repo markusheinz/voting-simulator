@@ -3,25 +3,39 @@ package votingsimulator;
 import static votingsimulator.VotingSimulator.MAX_CANDIDATE;
 import static votingsimulator.VotingSimulator.POINTS;
 
-public class VotingThread implements Runnable {
+public class VotingThread extends Thread {
 
-    protected int start;
-    protected int end;
-    protected Candidate[] rankingMulti;
-    protected Candidate[] rankingSingle;
+    protected final int count;
+    protected final Candidate[] rankingMulti;
+    protected final Candidate[] rankingSingle;
 
-    public VotingThread(int start, int end, Candidate[] rankingMulti,
-            Candidate[] rankingSingle) {
+    public VotingThread(int start, int end) {
+        count = end - start;
 
-        this.start = start;
-        this.end = end;
-        this.rankingMulti = rankingMulti;
-        this.rankingSingle = rankingSingle;
+        if (count <= 0) {
+            throw new IllegalArgumentException("end <= start");
+        }
+
+        rankingMulti =  new Candidate[MAX_CANDIDATE];
+        rankingSingle = new Candidate[MAX_CANDIDATE];
+
+        for (int i = 0; i < MAX_CANDIDATE; i++) {
+            rankingMulti[i] = new Candidate(i);
+            rankingSingle[i] = new Candidate(i);
+        }
+    }
+
+    public Candidate[] getRankingMulti() {
+        return rankingMulti;
+    }
+
+    public Candidate[] getRankingSingle() {
+        return rankingSingle;
     }
 
     @Override
     public void run() {
-        for (int i = start; i < end; i++) {
+        for (int i = 0; i < count; i++) {
             Vote vote = new Vote(POINTS, MAX_CANDIDATE);
             vote.vote();
 
