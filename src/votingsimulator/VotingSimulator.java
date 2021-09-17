@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 public class VotingSimulator {
     public static final int MAX_CANDIDATE = 30;
     public static final int[] POINTS = {5, 4, 3};    
-    public static int VOTERS = 60000000;
+    public static final int VOTERS = 60000000;
 
     protected static final Vote[] votes = new Vote[VOTERS];
 
