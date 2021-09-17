@@ -11,7 +11,7 @@ public class Vote {
     protected Map<Integer, Integer> multiVote;
     protected int singleVote;
     
-    protected static final Random random = new Random();
+    protected final Random random;
     
     public Vote(int[] voteOptions, int maxCandidates) {
         this.voteOptions = voteOptions;
@@ -19,6 +19,7 @@ public class Vote {
         
         multiVote = new HashMap<>();
         singleVote = -1;
+        random = new Random();
     }
     
     public void vote() {

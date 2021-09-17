@@ -6,7 +6,7 @@ public class VotingSimulator {
     public static final int MAX_CANDIDATE = 30;
     public static final int[] POINTS = {5, 4, 3};    
     public static final int VOTERS = 60000000;
-    public static final int THREAD_COUNT = 2;
+    public static final int THREAD_COUNT = 4;
 
     protected static final Candidate[] rankingMulti =
             new Candidate[MAX_CANDIDATE];
