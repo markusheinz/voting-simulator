@@ -1,0 +1,27 @@
+# Das MIR-Wahlverfahren
+
+## Beschreibung
+Das Multiple Instance Runoff (MIR) Wahlverfahren basiert auf dem bekannten Instant-Runoff-Verfahren (de.wikipedia.org/wiki/Instant_Runoff_Verfahren), erweitert dieses allerdings um eine Vorgehensweise zur Feststellung einer  Reihenfolge, wenn das Ziel einer Wahl mehrere zu besetzende Plätze sind, z.B. Listenplätze.
+
+## Wahlvorgang
+Vor dem Wahlvorgang muß jedem Wähler
+* die Anzahl der Kandidaten
+* die Anzahl der Listenplätze und
+* die Gewichtung der Stimme(n)
+bekannt sein.
+
+Letzterer Punkt kann durch eine der folgenden Varianten bestimmt werden:
+* Listenplatz
+Beim Ausfüllen des Wahlzettels wird der gewünschte Listenplatz angegeben.
+Hierbei kann die volle Anzahl der verfügbaren Listenplätze ausgedrückt werden.
+Jeder Platz darf nur einmal vergeben werden, doppelt vergebene Listenplätze machen den Wahlzettel ungültig.
+Nicht vergebene Listenplätze werden nicht mit berücksichtigt.
+* High-Score
+Es wird festgelegt, wie hoch _n_ ist: Eine feste Anzahl (zB 5) oder für jeden Listenplatz (optional -1).
+Beim Ausfüllen des Wahlzettels können bis zu _n_ Punkte einmalig pro Person vergeben werden.
+Je höher die Anzahl der Punkte, desto eher entspricht dies dem Wunsch, diese Person zu wählen.
+Nicht vergebene Punkte verfallen.
+
+## Auszählung
+Je nach Verfahren leicht unterschiedlich, aber immer die Summe der Punkte.
+Im "Listenplatz" ist ein niedriger Wert, bei "High-Score" eine hohe Punktzahl von Vorteil.
